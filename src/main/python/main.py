@@ -29,8 +29,11 @@ def main():
     # Startup PyQt code
     appctxt = ApplicationContext()
     window = uic.loadUi("window.ui")
-    im = Image.open(IMAGE_PATH)
     window.show()
+
+    
+    im = Image.open(IMAGE_PATH)
+    
 
     # Exit PyQt code
     exit_code = appctxt.app.exec_()      # 2. Invoke appctxt.app.exec_()
