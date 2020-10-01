@@ -1,6 +1,7 @@
 # Files
 *.pyc
 *.pyo
+*.jpg
 # Folders
 __pycache__/
 venv/
