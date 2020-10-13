@@ -3,7 +3,7 @@ import os
 import numpy
 import multiprocessing
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtWidgets, uic, QtGui
 from PIL import Image
 
 
@@ -49,8 +49,8 @@ def graphite(input_path, output_path, block_factor):
                 row.append(im.crop((wblock, hblock, w, h)))
         blocks.append(row)
     # Call image to convert block into block filled with average brightness
-    #blocks = [[avg_block(b) for b in a] for a in blocks]
-    blocks = [map(avg_block, x) for x in blocks]
+    blocks = [[avg_block(b) for b in a] for a in blocks]
+    #blocks = [map(avg_block, x) for x in blocks]
     out_canvas = Image.new("RGB", (w, h))
     for a in range(0, h, block_size):
         for b in range(0, w, block_size):
@@ -60,30 +60,38 @@ def graphite(input_path, output_path, block_factor):
                 out_canvas.paste(blocks[a//block_size][b//block_size], (b, a, w, h))
     out_canvas.save(output_path, "JPEG")
     
+def pick_image():
+    filePicker = QtWidgets.QFileDialog()
+    filePicker.setFileMode(QtWidgets.QFileDialog.ExistingFile)
+    filePicker.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
+    filePicker.setNameFilter("Images (*.png *.jpg)")
+    im_path = None
+    if filePicker.exec_():
+        files = filePicker.selectedFiles()
+        if len(files) >= 1:
+            im_path = files[0]
+            return im_path
 
 def main():
     # Startup PyQt code
     appctxt = ApplicationContext()
     window = uic.loadUi("window.ui")
     window.show()
-    
-    filePicker = QtWidgets.QFileDialog()
-    filePicker.setFileMode(QtWidgets.QFileDialog.ExistingFile)
-    filePicker.setFilter(QtWidgets.QString("JPEG (*.jpg *.jpeg)"))
-    im = None
-    if dlg.exec_():
-        im = Image.open(filePicker.selectedFiles())
-        im.show()
-    
+    #im = Image.open(filePicker.selectedFiles())
+    #im.show()
+    print(window.findChild(QtWidgets.QWidget, "centralwidget"))
+    [print(x.property("objectName")) for x in window.findChildren(QtWidgets.QLabel)]
+    inputImage = window.findChild(QtWidgets.QLabel)
+    inputImage.setPixmap(QtGui.QPixmap(pick_image()))
     #im = Image.open(IMAGE_PATH)
-    
 
     # Exit PyQt code
     exit_code = appctxt.app.exec_()      
     sys.exit(exit_code)
 
 def script_main():
-    graphite("images/Mona_Lisa.jpg", "images/output-Lisa.jpg", 8)
+    graphite("images/Durer_Self.jpg", "images/output-Durer-self.jpg", 32)
 
 if __name__ == '__main__':
-    script_main()
+    #script_main()
+    main()

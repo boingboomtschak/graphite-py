@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1136</width>
-    <height>588</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,13 +23,16 @@
       <height>521</height>
      </rect>
     </property>
+    <property name="accessibleName">
+     <string/>
+    </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="inputImage">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -37,6 +40,9 @@
        <width>481</width>
        <height>521</height>
       </rect>
+     </property>
+     <property name="accessibleName">
+      <string/>
      </property>
      <property name="text">
       <string>No image loaded!</string>
@@ -61,7 +67,7 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="outputImage">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -81,10 +87,10 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>250</y>
-      <width>75</width>
-      <height>23</height>
+      <x>520</x>
+      <y>20</y>
+      <width>91</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -131,6 +137,68 @@
     </property>
     <property name="text">
      <string>Block Size</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>260</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Averaged</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Sampled</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>240</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="text">
+     <string>Block Calculations:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>530</y>
+      <width>211</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Choose Image</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>530</y>
+      <width>211</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Choose Image</string>
     </property>
    </widget>
   </widget>
