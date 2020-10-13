@@ -3,9 +3,10 @@ import os
 import numpy
 import multiprocessing
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
-from PyQt5 import QtWidgets, uic, QtGui
+from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PIL import Image
 
+# ---- Methods ----
 
 # Takes average brightness value for block (0-255), returns value scaled into one of 7 shades
 def scale_block(value):
@@ -60,38 +61,85 @@ def graphite(input_path, output_path, block_factor):
                 out_canvas.paste(blocks[a//block_size][b//block_size], (b, a, w, h))
     out_canvas.save(output_path, "JPEG")
     
-def pick_image():
-    filePicker = QtWidgets.QFileDialog()
-    filePicker.setFileMode(QtWidgets.QFileDialog.ExistingFile)
-    filePicker.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
-    filePicker.setNameFilter("Images (*.png *.jpg)")
-    im_path = None
-    if filePicker.exec_():
-        files = filePicker.selectedFiles()
-        if len(files) >= 1:
-            im_path = files[0]
-            return im_path
+def pick_image(mode):
+    if mode == "open":
+        filePicker = QtWidgets.QFileDialog()
+        filePicker.setFileMode(QtWidgets.QFileDialog.ExistingFile)
+        filePicker.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
+        filePicker.setNameFilter("Images (*.png *.jpg)")
+        im_path = None
+        if filePicker.exec_():
+            files = filePicker.selectedFiles()
+            if len(files) >= 1:
+                im_path = files[0]
+        return im_path
+    elif mode == "save":
+        filePicker = QtWidgets.QFileDialog()
+        filePicker.setFileMode(QtWidgets.QFileDialog.AnyFile)
+        filePicker.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
+        filePicker.setNameFilter("Images (*.png *.jpg)")
+        im_path = None
+        if filePicker.exec_():
+            files = filePicker.selectedFiles()
+            if len(files) >= 1:
+                im_path = files[0]
+        return im_path
+
+def register_ui_paths(window):
+    return {
+        "inputImage": window.findChild(QtWidgets.QLabel, "inputImage"),
+        "outputImage": window.findChild(QtWidgets.QLabel, "outputImage"),
+        "convertButton": window.findChild(QtWidgets.QPushButton, "convertButton"),
+        "convertProgress": window.findChild(QtWidgets.QProgressBar, "convertProgress"),
+        "chooseInputImage": window.findChild(QtWidgets.QPushButton, "chooseInputImage"),
+        "chooseOutputImage": window.findChild(QtWidgets.QPushButton, "chooseInputImage"),
+        "blockSizeSlider": window.findChild(QtWidgets.QSlider, "blockSizeSlider"),
+        "blockSizeLabel": window.findChild(QtWidgets.QLabel, "blockSizeLabel"),
+        "blockSizeNumber": window.findChild(QtWidgets.QLCDNumber, "blockSizeNumber"),
+        "blockCalcDropdown": window.findChild(QtWidgets.QComboBox, "blockCalcDropdown"),
+        "blockCalcLabel": window.findChild(QtWidgets.QLabel, "blockCalcLabel"),
+    }
+
+def register_ui_events(elements):
+    elements["convertButton"].clicked.connect(convertButton)
+
+
+
+# ---- Main ----
 
 def main():
     # Startup PyQt code
     appctxt = ApplicationContext()
     window = uic.loadUi("window.ui")
     window.show()
-    #im = Image.open(filePicker.selectedFiles())
-    #im.show()
-    print(window.findChild(QtWidgets.QWidget, "centralwidget"))
-    [print(x.property("objectName")) for x in window.findChildren(QtWidgets.QLabel)]
-    inputImage = window.findChild(QtWidgets.QLabel)
-    inputImage.setPixmap(QtGui.QPixmap(pick_image()))
+    ele = register_ui_paths(window)
+    register_ui_events(ele)
+
+    inputImage = ele["inputImage"]
+    inputImage.setPixmap(QtGui.QPixmap(pick_image("open")).scaled(inputImage.width(), inputImage.height()))
     #im = Image.open(IMAGE_PATH)
 
     # Exit PyQt code
     exit_code = appctxt.app.exec_()      
     sys.exit(exit_code)
 
-def script_main():
-    graphite("images/Durer_Self.jpg", "images/output-Durer-self.jpg", 32)
+'''def script_main():
+    graphite("images/Durer_Self.jpg", "images/output-Durer-self.jpg", 32)'''
+
 
 if __name__ == '__main__':
-    #script_main()
     main()
+
+# ---- Button Events ----
+
+@QtCore.pyqtSlot()
+def convertButton():
+    pass
+
+@QtCore.pyqtSlot()
+def chooseInputImage():
+    pass
+
+@QtCore.pyqtSlot()
+def chooseOutputImage():
+    pass
