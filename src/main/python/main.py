@@ -1,26 +1,33 @@
 import sys
-import os
-import numpy
-import multiprocessing
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-from PIL import Image
 import utils
+
 
 # ---- Button Events ----
 
 def convertButton():
-    graphite()
+    global inputPath
+    if inputPath:
+        print("Starting graphite...")
+        utils.graphite(inputPath, "temp.png", blockSize)
+        outputImage = window.findChild(QtWidgets.QLabel, "outputImage")
+        pixmap = QtGui.QPixmap("temp.png")
+        if not pixmap.isNull():
+            pixmap = pixmap.scaled(outputImage.width(), outputImage.height())
+            outputImage.setPixmap(pixmap)
+    else:
+        print("No inputPath!")
 
 def chooseInputImage():
+    global inputPath
     inputImage = window.findChild(QtWidgets.QLabel, "inputImage") 
-    path = pick_image("open")
+    path = utils.pick_image("open")
     pixmap = QtGui.QPixmap(path)
     if not pixmap.isNull():
         inputPath = path
         pixmap = pixmap.scaled(inputImage.width(), inputImage.height())
         inputImage.setPixmap(pixmap)
-
 
 def chooseOutputImage():
     pass
@@ -31,6 +38,7 @@ def blockSizeSlider():
 
 def blockCalcDropdown():
     blockStrategy = blockCalc.currentText()
+
 
 # ---- UI Methods ----
 
@@ -58,14 +66,15 @@ def register_ui(w):
     w.findChild(QtWidgets.QSlider, "blockSizeSlider").valueChanged.connect(blockSizeSlider)
     w.findChild(QtWidgets.QComboBox, "blockCalcDropdown").currentTextChanged.connect(blockCalcDropdown)
 
-# ---- Main ----
 
+# ---- Main ----
 
 # Startup PyQt code
 appctxt = ApplicationContext()
 window = uic.loadUi("window.ui")
 window.show()
 register_ui(window)
+
 inputPath = ""
 
 # Initializing block size elements

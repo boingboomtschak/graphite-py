@@ -1,4 +1,7 @@
+import sys, os, numpy, threading, multiprocessing
 from PyQt5 import QtWidgets
+from PIL import Image
+
 
 # ---- Image Methods ----
 
