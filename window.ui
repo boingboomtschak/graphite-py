@@ -112,6 +112,18 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="segmentStyle">
+     <enum>QLCDNumber::Flat</enum>
+    </property>
    </widget>
    <widget class="QSlider" name="blockSizeSlider">
     <property name="geometry">
@@ -194,7 +206,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Choose Image</string>
+     <string>Load Image</string>
     </property>
    </widget>
    <widget class="QPushButton" name="chooseOutputImage">
@@ -207,7 +219,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Choose Image</string>
+     <string>Save Image</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="convertProgress">

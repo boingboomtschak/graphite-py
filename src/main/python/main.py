@@ -5,19 +5,22 @@ import multiprocessing
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PIL import Image
-from utils import *
+import utils
 
 # ---- Button Events ----
 
 def convertButton():
-    print("convertButton clicked!")
+    graphite()
 
 def chooseInputImage():
     inputImage = window.findChild(QtWidgets.QLabel, "inputImage") 
-    pixmap = QtGui.QPixmap(pick_image("open"))
+    path = pick_image("open")
+    pixmap = QtGui.QPixmap(path)
     if not pixmap.isNull():
+        inputPath = path
         pixmap = pixmap.scaled(inputImage.width(), inputImage.height())
         inputImage.setPixmap(pixmap)
+
 
 def chooseOutputImage():
     pass
@@ -28,7 +31,6 @@ def blockSizeSlider():
 
 def blockCalcDropdown():
     blockStrategy = blockCalc.currentText()
-    print(blockStrategy)
 
 # ---- UI Methods ----
 
@@ -64,6 +66,7 @@ appctxt = ApplicationContext()
 window = uic.loadUi("window.ui")
 window.show()
 register_ui(window)
+inputPath = ""
 
 # Initializing block size elements
 blockSlider = window.findChild(QtWidgets.QSlider, "blockSizeSlider")
@@ -72,7 +75,6 @@ blockCalc = window.findChild(QtWidgets.QComboBox, "blockCalcDropdown")
 blockSize = blockSlider.value()
 blockNumber.display(blockSize)
 blockStrategy = blockCalc.currentText()
-print(blockStrategy)
 
 
 # Exit PyQt code
