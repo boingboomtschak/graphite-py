@@ -26,6 +26,10 @@ def blockSizeSlider():
     blockSize = blockSlider.value()
     blockNumber.display(blockSize)
 
+def blockCalcDropdown():
+    blockStrategy = blockCalc.currentText()
+    print(blockStrategy)
+
 # ---- UI Methods ----
 
 '''
@@ -50,6 +54,7 @@ def register_ui(w):
     w.findChild(QtWidgets.QPushButton, "chooseInputImage").clicked.connect(chooseInputImage)
     w.findChild(QtWidgets.QPushButton, "chooseOutputImage").clicked.connect(chooseOutputImage)
     w.findChild(QtWidgets.QSlider, "blockSizeSlider").valueChanged.connect(blockSizeSlider)
+    w.findChild(QtWidgets.QComboBox, "blockCalcDropdown").currentTextChanged.connect(blockCalcDropdown)
 
 # ---- Main ----
 
@@ -63,8 +68,11 @@ register_ui(window)
 # Initializing block size elements
 blockSlider = window.findChild(QtWidgets.QSlider, "blockSizeSlider")
 blockNumber = window.findChild(QtWidgets.QLCDNumber, "blockSizeNumber")
+blockCalc = window.findChild(QtWidgets.QComboBox, "blockCalcDropdown")
 blockSize = blockSlider.value()
 blockNumber.display(blockSize)
+blockStrategy = blockCalc.currentText()
+print(blockStrategy)
 
 
 # Exit PyQt code
