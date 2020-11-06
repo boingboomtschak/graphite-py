@@ -10,7 +10,7 @@ def convertButton():
     global inputPath
     if inputPath:
         print("Starting graphite...")
-        utils.graphite(inputPath, "temp.png", blockSize)
+        utils.graphite(inputPath, "temp.png", blockSize) 
         convertProgress(100)
         outputImage = window.findChild(QtWidgets.QLabel, "outputImage")
         pixmap = QtGui.QPixmap("temp.png")

@@ -1,4 +1,4 @@
-import sys, os, numpy, threading, multiprocessing
+import numpy, multiprocessing, statistics, threading
 from PyQt5 import QtWidgets
 from PIL import Image
 
@@ -32,7 +32,10 @@ def avg_block(block):
     # Return altered block
     return block
 
-def graphite(input_path, output_path, block_factor):
+
+
+
+def old_graphite(input_path, output_path, block_factor):
     im = Image.open(input_path)
     w, h = im.size
     block_size = w // block_factor
@@ -56,7 +59,59 @@ def graphite(input_path, output_path, block_factor):
                 out_canvas.paste(blocks[a//block_size][b//block_size], (b, a, b + block_size, a + block_size))
             else:
                 out_canvas.paste(blocks[a//block_size][b//block_size], (b, a, w, h))
-    out_canvas.save(output_path, "JPEG")
+    out_canvas.save(output_path, "PNG")
+
+
+
+
+def graphite_box(im, l, r, t, b): # image, left, right, top, bottom
+    brightness = int(numpy.average([[statistics.mean(im.getpixel((x, y))) for y in range(t, b)] for x in range(l, r)]))
+    im.paste((brightness, brightness, brightness), (l, t, r, b))
+
+def graphite(input_path, output_path, bfactor, scale=False):
+    im = Image.open(input_path)
+    w, h = im.size
+    bsize = w // bfactor
+    processes = []
+    print("Processing image...")
+    last = 0
+    rnum = 0
+    rows = {}
+    for a in range(bsize, h, bsize):
+        row = im.crop((0, last, w, a))
+        p = threading.Thread(target=image_row, args=(row, rnum, bsize, graphite_box, rows))
+        processes.append(p)        
+        last = a
+        rnum += 1
+    [p.start() for p in processes]
+    [p.join() for p in processes]
+    paste_h = 0
+    for i in range(rnum):
+        if paste_h + bsize <= h:
+            im.paste(rows[i], (0, paste_h, w, paste_h + bsize))
+        else:
+            print("last row!")
+            im.paste(rows[i], (0, paste_h, w, h))
+        paste_h += bsize
+    print("Processing complete!")
+    print("Saving image...")
+    im.save(output_path, "PNG")
+
+
+def image_row(im, row_num, bsize, algo, rows):
+    print("{} algorithm on row {} with block size {}".format(algo.__name__, row_num, bsize))
+    imw, imh = im.size
+    for a in range(0, imw, bsize):
+        if a + bsize <= imw:
+            graphite_box(im, a, a+bsize, 0, imh)
+        else:
+            graphite_box(im, a, imw, 0, imh)
+    rows[row_num] = im
+
+
+
+
+
     
 def pick_image(mode):
     if mode == "open":
