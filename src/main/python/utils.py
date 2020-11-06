@@ -9,7 +9,7 @@ from PIL import Image
 def scale_block(value):
     if value < 36:
         return 36 # shade 1
-    elif value < 108:
+    elif value < 72:
         return 72 # shade 2
     elif value < 108:
         return 108 # shade 3

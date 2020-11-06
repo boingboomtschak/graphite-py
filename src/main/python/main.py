@@ -11,6 +11,7 @@ def convertButton():
     if inputPath:
         print("Starting graphite...")
         utils.graphite(inputPath, "temp.png", blockSize)
+        convertProgress(100)
         outputImage = window.findChild(QtWidgets.QLabel, "outputImage")
         pixmap = QtGui.QPixmap("temp.png")
         if not pixmap.isNull():
@@ -28,6 +29,8 @@ def chooseInputImage():
         inputPath = path
         pixmap = pixmap.scaled(inputImage.width(), inputImage.height())
         inputImage.setPixmap(pixmap)
+        convertProgress(0)
+
 
 def chooseOutputImage():
     pass
@@ -38,6 +41,9 @@ def blockSizeSlider():
 
 def blockCalcDropdown():
     blockStrategy = blockCalc.currentText()
+
+def convertProgress(percent):
+    window.findChild(QtWidgets.QProgressBar, "convertProgress").setValue(percent)
 
 
 # ---- UI Methods ----
