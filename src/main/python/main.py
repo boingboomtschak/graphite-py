@@ -7,11 +7,6 @@ from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PIL import Image
 from utils import *
 
-
-
-
-
-
 # ---- Button Events ----
 
 def convertButton():

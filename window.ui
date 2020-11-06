@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1136</width>
-    <height>601</height>
+    <height>579</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,7 +26,7 @@
       <x>9</x>
       <y>9</y>
       <width>491</width>
-      <height>521</height>
+      <height>511</height>
      </rect>
     </property>
     <property name="accessibleName">
@@ -41,10 +41,10 @@
     <widget class="QLabel" name="inputImage">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>0</x>
        <y>0</y>
-       <width>481</width>
-       <height>521</height>
+       <width>491</width>
+       <height>511</height>
       </rect>
      </property>
      <property name="accessibleName">
@@ -64,7 +64,7 @@
       <x>630</x>
       <y>10</y>
       <width>491</width>
-      <height>521</height>
+      <height>511</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -76,10 +76,10 @@
     <widget class="QLabel" name="outputImage">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>0</x>
        <y>2</y>
-       <width>481</width>
-       <height>521</height>
+       <width>491</width>
+       <height>511</height>
       </rect>
      </property>
      <property name="text">
@@ -234,7 +234,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
