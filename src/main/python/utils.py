@@ -113,8 +113,8 @@ def image_row(im, row_num, bsize, algo, rows):
 
 def graphite_smp_box(im, l, r, t, b):
     print((l, r, t, b))
-    x = random.randint(l, r)
-    y = random.randint(t, b)
+    x = random.randint(l, r-1)
+    y = random.randint(t, b-1)
     brightness = int(statistics.mean(im.getpixel((x, y))))
     im.paste((brightness, brightness, brightness), (l, t, r, b))
 
@@ -129,7 +129,15 @@ def graphite_smp(input_path, output_path, bfactor, scale=False):
         for b in range(bsize, w, bsize):
             graphite_smp_box(im, lastw, b, lasth, a)
             lastw = b
+        if lastw < w:
+            graphite_smp_box(im, lastw, w, lasth, a)
         lasth = a
+    if lasth < h:
+        lastw = 0
+        for b in range(bsize, w, bsize):
+            graphite_smp_box(im, lastw, b, lasth, h)
+        if lastw + bsize <= w:
+            graphite_smp_box(im, lastw, w, lasth, h)
     print("Processing complete!")
     print("Saving image...")
     im.save(output_path, "PNG")
