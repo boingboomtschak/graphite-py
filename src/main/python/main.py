@@ -8,10 +8,20 @@ import utils
 
 def convertButton():
     global inputPath
+    global blockStrategy
     if inputPath:
-        print("Starting graphite...")
-        utils.graphite(inputPath, "temp.png", blockSize) 
+        button = window.findChild(QtWidgets.QPushButton, "convertButton")
+        button.setEnabled(False)
+        if blockStrategy == "Averaged":
+            print("Starting averaged graphite...")
+            utils.graphite_avg(inputPath, "temp.png", blockSize) 
+        elif blockStrategy == "Sampled":
+            print("Starting sampled graphite...")
+            utils.graphite_smp(inputPath, "temp.png", blockSize)
+        else:
+            print("ERROR: Invalid block strategy!")
         convertProgress(100)
+        button.setEnabled(True)
         outputImage = window.findChild(QtWidgets.QLabel, "outputImage")
         pixmap = QtGui.QPixmap("temp.png")
         if not pixmap.isNull():
@@ -36,10 +46,12 @@ def chooseOutputImage():
     pass
 
 def blockSizeSlider():
+    global blockSize
     blockSize = blockSlider.value()
     blockNumber.display(blockSize)
 
 def blockCalcDropdown():
+    global blockStrategy
     blockStrategy = blockCalc.currentText()
 
 def convertProgress(percent):

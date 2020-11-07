@@ -1,4 +1,4 @@
-import numpy, multiprocessing, statistics, threading
+import numpy, multiprocessing, statistics, threading, random
 from PyQt5 import QtWidgets
 from PIL import Image
 
@@ -64,11 +64,11 @@ def old_graphite(input_path, output_path, block_factor):
 
 
 
-def graphite_box(im, l, r, t, b): # image, left, right, top, bottom
+def graphite_avg_box(im, l, r, t, b): # image, left, right, top, bottom
     brightness = int(numpy.average([[statistics.mean(im.getpixel((x, y))) for y in range(t, b)] for x in range(l, r)]))
     im.paste((brightness, brightness, brightness), (l, t, r, b))
 
-def graphite(input_path, output_path, bfactor, scale=False):
+def graphite_avg(input_path, output_path, bfactor, scale=False):
     im = Image.open(input_path)
     w, h = im.size
     bsize = w // bfactor
@@ -78,8 +78,11 @@ def graphite(input_path, output_path, bfactor, scale=False):
     rnum = 0
     rows = {}
     for a in range(bsize, h, bsize):
-        row = im.crop((0, last, w, a))
-        p = threading.Thread(target=image_row, args=(row, rnum, bsize, graphite_box, rows))
+        if a > h:
+            row = im.crop((0, last, w, h))
+        else:
+            row = im.crop((0, last, w, a))
+        p = threading.Thread(target=image_row, args=(row, rnum, bsize, graphite_avg_box, rows))
         processes.append(p)        
         last = a
         rnum += 1
@@ -90,7 +93,7 @@ def graphite(input_path, output_path, bfactor, scale=False):
         if paste_h + bsize <= h:
             im.paste(rows[i], (0, paste_h, w, paste_h + bsize))
         else:
-            print("last row!")
+            print("last row!") #d
             im.paste(rows[i], (0, paste_h, w, h))
         paste_h += bsize
     print("Processing complete!")
@@ -103,13 +106,33 @@ def image_row(im, row_num, bsize, algo, rows):
     imw, imh = im.size
     for a in range(0, imw, bsize):
         if a + bsize <= imw:
-            graphite_box(im, a, a+bsize, 0, imh)
+            graphite_avg_box(im, a, a+bsize, 0, imh)
         else:
-            graphite_box(im, a, imw, 0, imh)
+            graphite_avg_box(im, a, imw, 0, imh)
     rows[row_num] = im
 
+def graphite_smp_box(im, l, r, t, b):
+    print((l, r, t, b))
+    x = random.randint(l, r)
+    y = random.randint(t, b)
+    brightness = int(statistics.mean(im.getpixel((x, y))))
+    im.paste((brightness, brightness, brightness), (l, t, r, b))
 
-
+def graphite_smp(input_path, output_path, bfactor, scale=False):
+    im = Image.open(input_path)
+    w, h = im.size
+    bsize = w // bfactor
+    print("Processing image...")
+    lasth = 0 
+    for a in range(bsize, h, bsize):
+        lastw = 0
+        for b in range(bsize, w, bsize):
+            graphite_smp_box(im, lastw, b, lasth, a)
+            lastw = b
+        lasth = a
+    print("Processing complete!")
+    print("Saving image...")
+    im.save(output_path, "PNG")
 
 
     
