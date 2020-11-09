@@ -119,21 +119,14 @@ def graphite_smp(input_path, output_path, bfactor, scale=False):
     w, h = im.size
     bsize = w // bfactor
     print("Processing image...")
-    lasth = 0 
-    for a in range(bsize, h, bsize):
-        lastw = 0
-        for b in range(bsize, w, bsize):
-            graphite_smp_box(im, lastw, b, lasth, a)
-            lastw = b
-        if lastw < w:
-            graphite_smp_box(im, lastw, w, lasth, a)
-        lasth = a
-    if lasth < h:
-        lastw = 0
-        for b in range(bsize, w, bsize):
-            graphite_smp_box(im, lastw, b, lasth, h)
-        if lastw + bsize <= w:
-            graphite_smp_box(im, lastw, w, lasth, h)
+    for a in range(0, h, bsize):
+        for b in range(0, w, bsize):
+            if (a + bsize <= h) and (b + bsize <= w):
+                graphite_smp_box(im, b, b + bsize, a, a + bsize)
+            elif (b + bsize <= h):
+                graphite_smp_box(im, b, b + bsize, a, h)
+            else:
+                graphite_smp_box(im, b, w, a, h)
     print("Processing complete!")
     print("Saving image...")
     im.save(output_path, "PNG")
