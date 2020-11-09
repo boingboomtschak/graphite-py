@@ -87,26 +87,27 @@ def register_ui(w):
 
 # ---- Main ----
 
-# Startup PyQt code
-appctxt = ApplicationContext()
-window = uic.loadUi("window.ui")
-window.show()
-register_ui(window)
+if __name__ == "__main__":
+    # Startup PyQt code
+    appctxt = ApplicationContext()
+    window = uic.loadUi("window.ui")
+    window.show()
+    register_ui(window)
 
-inputPath = ""
+    inputPath = ""
 
-# Initializing block size elements
-blockSlider = window.findChild(QtWidgets.QSlider, "blockSizeSlider")
-blockNumber = window.findChild(QtWidgets.QLCDNumber, "blockSizeNumber")
-blockCalc = window.findChild(QtWidgets.QComboBox, "blockCalcDropdown")
-blockSize = blockSlider.value()
-blockNumber.display(blockSize)
-blockStrategy = blockCalc.currentText()
+    # Initializing block size elements
+    blockSlider = window.findChild(QtWidgets.QSlider, "blockSizeSlider")
+    blockNumber = window.findChild(QtWidgets.QLCDNumber, "blockSizeNumber")
+    blockCalc = window.findChild(QtWidgets.QComboBox, "blockCalcDropdown")
+    blockSize = blockSlider.value()
+    blockNumber.display(blockSize)
+    blockStrategy = blockCalc.currentText()
 
 
-# Exit PyQt code
-exit_code = appctxt.app.exec_()      
-sys.exit(exit_code)
+    # Exit PyQt code
+    exit_code = appctxt.app.exec_()      
+    sys.exit(exit_code)
 
 '''def script_main():
     graphite("images/Durer_Self.jpg", "images/output-Durer-self.jpg", 32)'''

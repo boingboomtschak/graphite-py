@@ -3,7 +3,7 @@ from PyQt5 import QtWidgets
 from PIL import Image
 
 
-# ---- Image Methods ----
+# --- Image Methods ---
 
 # Takes average brightness value for block (0-255), returns value scaled into one of 7 shades
 def scale_block(value):
@@ -22,11 +22,13 @@ def scale_block(value):
     else:
         return 255 # shade 7
 
+# --- Graphite (Averaged) --- 
+
 def graphite_avg_box(im, l, r, t, b): # image, left, right, top, bottom
     brightness = int(numpy.average([[statistics.mean(im.getpixel((x, y))) for y in range(t, b)] for x in range(l, r)]))
     im.paste((brightness, brightness, brightness), (l, t, r, b))
 
-def graphite_avg(input_path, output_path, bfactor, scale=False):
+def graphite_avg(input_path, output_path, bfactor, scale=None):
     im = Image.open(input_path)
     w, h = im.size
     bsize = w // bfactor
@@ -55,9 +57,8 @@ def graphite_avg(input_path, output_path, bfactor, scale=False):
     print("Saving image...")
     im.save(output_path, "PNG")
 
-
 def image_row(im, row_num, bsize, algo, rows):
-    print("{} algorithm on row {} with block size {}".format(algo.__name__, row_num, bsize))
+    print("Starting thread with {} algorithm on row {} with block size {}".format(algo.__name__, row_num, bsize))
     imw, imh = im.size
     for a in range(0, imw, bsize):
         if a + bsize <= imw:
@@ -65,6 +66,8 @@ def image_row(im, row_num, bsize, algo, rows):
         else:
             graphite_avg_box(im, a, imw, 0, imh)
     rows[row_num] = im
+
+# -- Graphite (Sampled) --- 
 
 def graphite_smp_box(im, l, r, t, b):
     x = random.randint(l, r-1)

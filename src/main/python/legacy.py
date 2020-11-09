@@ -8,7 +8,7 @@ def avg_block(block):
     # Return altered block
     return block
 
-def old_graphite(input_path, output_path, block_factor):
+def graphite_v1(input_path, output_path, block_factor):
     im = Image.open(input_path)
     w, h = im.size
     block_size = w // block_factor
@@ -33,3 +33,20 @@ def old_graphite(input_path, output_path, block_factor):
             else:
                 out_canvas.paste(blocks[a//block_size][b//block_size], (b, a, w, h))
     out_canvas.save(output_path, "PNG")
+
+def graphite_avg_nothread(input_path, output_path, bfactor, scale=None):
+    im = Image.open(input_path)
+    w, h = im.size
+    bsize = w // bfactor
+    print("Processing image...")
+    for a in range(0, h, bsize):
+        for b in range(0, h, bsize):
+            if (a + bsize <= h) and (b + bsize <= w):
+                graphite_avg_box(im, b, b + bsize, a, a + bsize)
+            elif (b + bsize <= h):
+                graphite_avg_box(im, b, b + bsize, a, h)
+            else:
+                graphite_avg_box(im, b, w, a, h)
+    print("Processing complete!")
+    print("Saving image...")
+    im.save(output_path, "PNG")
