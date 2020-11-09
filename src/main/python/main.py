@@ -16,7 +16,7 @@ def convertButton():
         button.setEnabled(False)
         if blockStrategy == "Averaged":
             print("Starting averaged graphite...")
-            utils.graphite_avg(inputPath, "temp.png", blockSize) 
+            utils.graphite_avg(inputPath, "temp.png", blockSize, blockScale) 
         elif blockStrategy == "Sampled":
             print("Starting sampled graphite...")
             utils.graphite_smp(inputPath, "temp.png", blockSize, blockScale)
