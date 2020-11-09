@@ -14,6 +14,7 @@ def convertButton():
     if inputPath:
         button = window.findChild(QtWidgets.QPushButton, "convertButton")
         button.setEnabled(False)
+        convertStatus("Processing average...", "yellow")
         if blockStrategy == "Averaged":
             print("Starting averaged graphite...")
             utils.graphite_avg(inputPath, "temp.png", blockSize, blockScale) 
@@ -29,8 +30,10 @@ def convertButton():
         if not pixmap.isNull():
             pixmap = pixmap.scaled(outputImage.width(), outputImage.height())
             outputImage.setPixmap(pixmap)
+        convertStatus("Processing complete!", "green")
     else:
         print("No inputPath!")
+        convertStatus("Invalid input path!", "red")
 
 def chooseInputImage():
     global inputPath
@@ -42,6 +45,7 @@ def chooseInputImage():
         pixmap = pixmap.scaled(inputImage.width(), inputImage.height())
         inputImage.setPixmap(pixmap)
         convertProgress(0)
+        convertStatus("... Waiting ...", "black")
 
 
 def chooseOutputImage():
@@ -71,6 +75,12 @@ def scaleDropdown():
         blockScale = None
 
 # ---- UI Methods ----
+
+def convertStatus(message, color):
+    cs = window.findChild(QtWidgets.QLabel, "convertStatus")
+    cs.setText(message)
+    cs.setStyleSheet('color: ' + color)
+
 
 def convertProgress(percent):
     window.findChild(QtWidgets.QProgressBar, "convertProgress").setValue(percent)
