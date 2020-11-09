@@ -6,21 +6,16 @@ from PIL import Image
 # --- Image Methods ---
 
 # Takes average brightness value for block (0-255), returns value scaled into one of 7 shades
-def scale_block(value):
-    if value < 36:
-        return 36 # shade 1
-    elif value < 72:
-        return 72 # shade 2
-    elif value < 108:
-        return 108 # shade 3
-    elif value < 144:
-        return 144 # shade 4
-    elif value < 180:
-        return 180 # shade 5
-    elif value < 216:
-        return 216 # shade 6
-    else:
-        return 255 # shade 7
+def scale_block(value, scale):
+    if not scale:
+        return value
+    scale_keys = list(scale.keys())
+    scale_keys.sort()
+    for i in range(len(scale_keys)-1):
+        if value > scale_keys[i] and value <= scale_keys[i+1]:
+            return scale_keys[i]
+    return scale_keys[-1]
+            
 
 # --- Graphite (Averaged) --- 
 
@@ -69,13 +64,15 @@ def image_row(im, row_num, bsize, algo, rows):
 
 # -- Graphite (Sampled) --- 
 
-def graphite_smp_box(im, l, r, t, b):
+def graphite_smp_box(im, l, r, t, b, scale=None):
     x = random.randint(l, r-1)
     y = random.randint(t, b-1)
     brightness = int(statistics.mean(im.getpixel((x, y))))
+    if scale:
+        brightness = scale_block(brightness, scale)
     im.paste((brightness, brightness, brightness), (l, t, r, b))
 
-def graphite_smp(input_path, output_path, bfactor, scale=False):
+def graphite_smp(input_path, output_path, bfactor, scale=None):
     im = Image.open(input_path)
     w, h = im.size
     bsize = w // bfactor
@@ -83,11 +80,11 @@ def graphite_smp(input_path, output_path, bfactor, scale=False):
     for a in range(0, h, bsize):
         for b in range(0, w, bsize):
             if (a + bsize <= h) and (b + bsize <= w):
-                graphite_smp_box(im, b, b + bsize, a, a + bsize)
+                graphite_smp_box(im, b, b + bsize, a, a + bsize, scale)
             elif (b + bsize <= w):
-                graphite_smp_box(im, b, b + bsize, a, h)
+                graphite_smp_box(im, b, b + bsize, a, h, scale)
             else:
-                graphite_smp_box(im, b, w, a, h)
+                graphite_smp_box(im, b, w, a, h, scale)
     print("Processing complete!")
     print("Saving image...")
     im.save(output_path, "PNG")

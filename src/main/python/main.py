@@ -1,7 +1,7 @@
 import sys
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-import utils
+import utils, scales
 
 
 # ---- Button Events ----
@@ -9,6 +9,8 @@ import utils
 def convertButton():
     global inputPath
     global blockStrategy
+    global blockSize
+    global blockScale
     if inputPath:
         button = window.findChild(QtWidgets.QPushButton, "convertButton")
         button.setEnabled(False)
@@ -17,7 +19,7 @@ def convertButton():
             utils.graphite_avg(inputPath, "temp.png", blockSize) 
         elif blockStrategy == "Sampled":
             print("Starting sampled graphite...")
-            utils.graphite_smp(inputPath, "temp.png", blockSize)
+            utils.graphite_smp(inputPath, "temp.png", blockSize, blockScale)
         else:
             print("ERROR: Invalid block strategy!")
         convertProgress(100)
@@ -54,28 +56,20 @@ def blockCalcDropdown():
     global blockStrategy
     blockStrategy = blockCalc.currentText()
 
-def convertProgress(percent):
-    window.findChild(QtWidgets.QProgressBar, "convertProgress").setValue(percent)
-
+def scaleDropdown():
+    global blockScale
+    textScale = scaleDropdown.currentText()
+    if textScale == "7 Shade":
+        blockScale = scales.SEVEN_SHADE
+    elif textScale == "14 Shade":
+        blockScale = scales.FOURTEEN_SHADE
+    else:
+        blockScale = None
 
 # ---- UI Methods ----
 
-'''
-def register_ui_paths(window):
-    return {
-        "inputImage": window.findChild(QtWidgets.QLabel, "inputImage"),
-        "outputImage": window.findChild(QtWidgets.QLabel, "outputImage"),
-        "convertButton": window.findChild(QtWidgets.QPushButton, "convertButton"),
-        "convertProgress": window.findChild(QtWidgets.QProgressBar, "convertProgress"),
-        "chooseInputImage": window.findChild(QtWidgets.QPushButton, "chooseInputImage"),
-        "chooseOutputImage": window.findChild(QtWidgets.QPushButton, "chooseInputImage"),
-        "blockSizeSlider": window.findChild(QtWidgets.QSlider, "blockSizeSlider"),
-        "blockSizeLabel": window.findChild(QtWidgets.QLabel, "blockSizeLabel"),
-        "blockSizeNumber": window.findChild(QtWidgets.QLCDNumber, "blockSizeNumber"),
-        "blockCalcDropdown": window.findChild(QtWidgets.QComboBox, "blockCalcDropdown"),
-        "blockCalcLabel": window.findChild(QtWidgets.QLabel, "blockCalcLabel"),
-    }
-'''
+def convertProgress(percent):
+    window.findChild(QtWidgets.QProgressBar, "convertProgress").setValue(percent)
 
 def register_ui(w):
     w.findChild(QtWidgets.QPushButton, "convertButton").clicked.connect(convertButton)
@@ -83,6 +77,7 @@ def register_ui(w):
     w.findChild(QtWidgets.QPushButton, "chooseOutputImage").clicked.connect(chooseOutputImage)
     w.findChild(QtWidgets.QSlider, "blockSizeSlider").valueChanged.connect(blockSizeSlider)
     w.findChild(QtWidgets.QComboBox, "blockCalcDropdown").currentTextChanged.connect(blockCalcDropdown)
+    w.findChild(QtWidgets.QComboBox, "scaleDropdown").currentTextChanged.connect(scaleDropdown)
 
 
 # ---- Main ----
@@ -103,6 +98,8 @@ if __name__ == "__main__":
     blockSize = blockSlider.value()
     blockNumber.display(blockSize)
     blockStrategy = blockCalc.currentText()
+    scaleDropdown = window.findChild(QtWidgets.QComboBox, "scaleDropdown")
+    blockScale = None
 
 
     # Exit PyQt code
