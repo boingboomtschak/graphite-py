@@ -9,7 +9,9 @@ TBD
 
 ##### Development
 
-<u>Requirements:</u> Python 3.x.x (preferably 3.6+), pip
+<u>Requirements:</u> Python 3.x.x (preferably 3.6), pip
+
+*Note:* fbs cannot build projects for release with Python versions past 3.6, so stick to 3.6 when creating the venv if this is something you need.
 
 First, clone the GitHub repo to your directory of choice
 

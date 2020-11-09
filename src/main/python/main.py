@@ -99,7 +99,7 @@ def register_ui(w):
 if __name__ == "__main__":
     # Startup PyQt code
     appctxt = ApplicationContext()
-    window = uic.loadUi("window.ui")
+    window = uic.loadUi(appctxt.get_resource("window.ui"))
     window.show()
     register_ui(window)
 
