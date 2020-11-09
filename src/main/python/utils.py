@@ -13,8 +13,8 @@ def scale_block(value, scale):
     scale_keys.sort()
     for i in range(len(scale_keys)-1):
         if value > scale_keys[i] and value <= scale_keys[i+1]:
-            return scale_keys[i]
-    return scale_keys[-1]
+            return scale[scale_keys[i]]
+    return scale[scale_keys[-1]]
             
 
 # --- Graphite (Averaged) --- 

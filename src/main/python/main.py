@@ -61,8 +61,12 @@ def scaleDropdown():
     textScale = scaleDropdown.currentText()
     if textScale == "7 Shade":
         blockScale = scales.SEVEN_SHADE
+    elif textScale == "7 Shade (R)":
+        blockScale = scales.SEVEN_SHADE_REVERSED
     elif textScale == "14 Shade":
         blockScale = scales.FOURTEEN_SHADE
+    elif textScale == "14 Shade (R)":
+        blockScale = scales.FOURTEEN_SHADE_REVERSED
     else:
         blockScale = None
 

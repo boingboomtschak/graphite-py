@@ -272,6 +272,21 @@
       <string>7 Shade</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>7 Shade (R)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>14 Shade</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>14 Shade (R)</string>
+     </property>
+    </item>
    </widget>
    <widget class="QLabel" name="scaleLabel">
     <property name="geometry">
