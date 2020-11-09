@@ -84,7 +84,7 @@ def graphite_smp(input_path, output_path, bfactor, scale=False):
         for b in range(0, w, bsize):
             if (a + bsize <= h) and (b + bsize <= w):
                 graphite_smp_box(im, b, b + bsize, a, a + bsize)
-            elif (b + bsize <= h):
+            elif (b + bsize <= w):
                 graphite_smp_box(im, b, b + bsize, a, h)
             else:
                 graphite_smp_box(im, b, w, a, h)
