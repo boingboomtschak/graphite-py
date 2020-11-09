@@ -74,17 +74,15 @@ def graphite_avg(input_path, output_path, bfactor, scale=False):
     bsize = w // bfactor
     processes = []
     print("Processing image...")
-    last = 0
     rnum = 0
     rows = {}
-    for a in range(bsize, h, bsize):
-        if a > h:
-            row = im.crop((0, last, w, h))
+    for a in range(0, h, bsize):
+        if a + bsize > h:
+            row = im.crop((0, a, w, h))
         else:
-            row = im.crop((0, last, w, a))
+            row = im.crop((0, a, w, a + bsize))
         p = threading.Thread(target=image_row, args=(row, rnum, bsize, graphite_avg_box, rows))
         processes.append(p)        
-        last = a
         rnum += 1
     [p.start() for p in processes]
     [p.join() for p in processes]
@@ -93,7 +91,6 @@ def graphite_avg(input_path, output_path, bfactor, scale=False):
         if paste_h + bsize <= h:
             im.paste(rows[i], (0, paste_h, w, paste_h + bsize))
         else:
-            print("last row!") #d
             im.paste(rows[i], (0, paste_h, w, h))
         paste_h += bsize
     print("Processing complete!")
@@ -112,7 +109,6 @@ def image_row(im, row_num, bsize, algo, rows):
     rows[row_num] = im
 
 def graphite_smp_box(im, l, r, t, b):
-    print((l, r, t, b))
     x = random.randint(l, r-1)
     y = random.randint(t, b-1)
     brightness = int(statistics.mean(im.getpixel((x, y))))
