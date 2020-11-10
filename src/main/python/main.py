@@ -1,4 +1,4 @@
-import sys
+import sys, shutil, os
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 import utils, scales
@@ -49,7 +49,9 @@ def chooseInputImage():
 
 
 def chooseOutputImage():
-    pass
+    outputImage = window.findChild(QtWidgets.QLabel, "outputImage")
+    path = utils.pick_image("save")
+    shutil.copy("temp.png", path)
 
 def blockSizeSlider():
     global blockSize

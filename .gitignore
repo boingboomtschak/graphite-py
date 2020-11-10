@@ -3,9 +3,9 @@
 *.pyo
 *.jpg
 *.png
-temp.png
+
 # Folders
 __pycache__/
 venv/
 target/
-*.png
+

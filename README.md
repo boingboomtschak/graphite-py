@@ -5,7 +5,7 @@ A graphical interface to apply grayscale pixel transformations to images, writte
 
 ##### Production
 
-TBD
+Check out the [Releases Page](https://github.com/d-mckee/graphite-py/releases) for current downloads. 
 
 ##### Development
 
