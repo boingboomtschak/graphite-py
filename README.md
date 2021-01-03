@@ -1,4 +1,8 @@
 # graphite-py
+
+![GitHub top language](https://img.shields.io/github/languages/top/d-mckee/graphite-py?color=yellow&style=flat&logo=python) ![GitHub last commit](https://img.shields.io/github/last-commit/d-mckee/graphite-py?style=flat) ![GitHub repo size](https://img.shields.io/github/repo-size/d-mckee/graphite-py?style=flat) 
+
+
 A graphical interface to apply grayscale pixel transformations to images, written in Python.
 
 ## Showcase
