@@ -1,6 +1,16 @@
 # graphite-py
 A graphical interface to apply grayscale pixel transformations to images, written in Python.
 
+## Showcase
+
+Screenshots of the tool in action (subject to change/replacement as the UI and functionality are updated)
+
+![No scale selected, averaged algorithm applied, block scale 50 (default settings)](img/none_averaged_50.png)
+
+![No scale selected, sampled algorithm applied, block scale 80](img/none_sampled_80.png)
+
+![14-shade scale selected, sampled algorithm applied, block scale 87](img/14shade_sampled_87.png)
+
 ## Setup
 
 ##### Production
