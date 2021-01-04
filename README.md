@@ -1,7 +1,6 @@
 # graphite-py
 
-![GitHub top language](https://img.shields.io/github/languages/top/d-mckee/graphite-py?color=yellow&style=flat&logo=python) ![GitHub last commit](https://img.shields.io/github/last-commit/d-mckee/graphite-py?style=flat) ![GitHub repo size](https://img.shields.io/github/repo-size/d-mckee/graphite-py?style=flat) 
-
+![GitHub top language](https://img.shields.io/github/languages/top/d-mckee/graphite-py?color=244d70&style=flat&logo=python) ![GitHub last commit](https://img.shields.io/github/last-commit/d-mckee/graphite-py?style=flat) ![GitHub repo size](https://img.shields.io/github/repo-size/d-mckee/graphite-py?style=flat) 
 
 A graphical interface to apply grayscale pixel transformations to images, written in Python.
 
@@ -24,6 +23,8 @@ Check out the [Releases Page](https://github.com/d-mckee/graphite-py/releases) f
 ##### Development
 
 <u>Requirements:</u> Python 3.x.x (preferably 3.6), pip
+
+*Note:* Issues have arisen building the project for release using non-Windows machines, so the instructions here are tentative until a suitable workaround is found.
 
 *Note:* fbs cannot build projects for release with Python versions past 3.6, so stick to 3.6 when creating the venv if this is something you need.
 
